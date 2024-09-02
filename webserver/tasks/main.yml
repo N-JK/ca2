@@ -1,0 +1,33 @@
+---
+- name: Ensure HTTPD is installed
+  package:
+    name: httpd
+    state: present
+  become: yes
+
+- name: Ensure HTTPD service is running and enabled
+  service:
+    name: httpd
+    state: started
+    enabled: yes
+  become: yes
+
+- name: Deploy the HTTPD configuration file
+  template:
+    src: httpd.conf.j2
+    dest: /etc/httpd/conf/httpd.conf
+  notify:
+    - Restart HTTPD
+
+- name: Add users
+  user:
+    name: "{{ item.name }}"
+    state: present
+    shell: /bin/bash
+  loop:
+    - { name: 'user1' }
+    - { name: 'user2' }
+    - { name: 'user3' }
+    - { name: 'user4' }
+
+...

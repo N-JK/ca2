@@ -1,0 +1,21 @@
+# This is an example of a configuration file
+ServerRoot "{{ ansible_facts['default_ipv4']['address'] }}"
+
+Listen 80
+
+# Load additional modules
+LoadModule mpm_prefork_module modules/mod_mpm_prefork.so
+LoadModule dir_module modules/mod_dir.so
+
+<Directory "/var/www/html">
+    AllowOverride All
+    Require all granted
+</Directory>
+
+DocumentRoot "/var/www/html"
+
+<IfModule dir_module>
+    DirectoryIndex index.html
+</IfModule>
+
+
